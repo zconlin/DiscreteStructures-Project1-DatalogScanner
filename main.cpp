@@ -17,7 +17,11 @@ int main (int argc, char* argv[]) {
     string content((istreambuf_iterator<char>(f)), (istreambuf_iterator<char>()));
 
     Scanner s = Scanner(content);
-    Token t = s.scanToken();
-    cout << t.toString() << endl;
+    vector<Token> t = s.scanLoop();
+        for (Token token : t) {
+           cout << token.toString() << endl;
+        }
+    cout << "Total Tokens = " << t.size();
+
     return 0;
 }

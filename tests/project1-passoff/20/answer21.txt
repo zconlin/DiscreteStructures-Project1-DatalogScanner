@@ -1,3 +1,2 @@
 (EOF,"",1)
 Total Tokens = 1
-# Test comment
