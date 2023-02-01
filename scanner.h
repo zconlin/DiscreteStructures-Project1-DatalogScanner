@@ -1,8 +1,6 @@
 #pragma once
 
-// Make undefined return the undefined char
 // Complex string tokens
-// EOF token doesn't read
 
 #include "token.h"
 #include <sstream>
@@ -22,16 +20,17 @@ public:
   Scanner(const string &input) : input(input) {}
 
   Token scanToken() {
-//      char c = input.at(0);
+      if (input.empty()) {
+          return {END, "", lineAt};
+      }
       while (isspace(input.at(0))) {
         if (input.at(0) == '\n') {
             lineAt++;
         }
-        input = input.substr(1);
-        if (input.empty()) {
+          input = input.substr(1);
+          if (input.empty()) {
             return {END, "", lineAt};
         }
-//            c = input.at(0);
       }
     if (input.at(0) == ',') {
       input = input.substr(1);
@@ -71,23 +70,6 @@ public:
       input = input.substr(1);
       return {ADD, "+", lineAt};
     }
-		// SCHEMES,FACTS,RULES,QUERIES,ID
-        // String tests from " to " and consumes everything inside
-        // Comment tests from # to new line and consumes everything inside
-        // All the rest wait for the next space then test to see which it
-            // is, if its none of them it's an id
-
-//    else if (input.at(0) == 'S') {
-//        pos = 0;
-//        string schemeString = "";
-//        while (input.at(pos + 1) == "c") {
-//            schemeString.push_back(input.at(pos));
-//            input = input.substr(pos + 1);
-//        }
-//        return {SCHEMES, schemeString, lineAt};
-//    }
-
-
     else if (input.at(0) == '#') {
         pos = 0;
         string commentString = "";
@@ -107,22 +89,25 @@ public:
             stringString.push_back(input.at(pos));
             pos = pos + 1;
         }
-
         input = input.substr(pos + 1);
         return {STRING, stringString, lineAt};
     }
+        string v = input.substr(0, 1);
         input = input.substr(1);
-    return {UNDEFINED, "NULL", lineAt};
+    return {UNDEFINED, v, lineAt};
 
   }
 
   vector<Token> scanLoop() {
       vector<Token> vectorOfTokens;
-      while(input.length() != 0) {
-
+      do {
           Token tmp = scanToken();
           vectorOfTokens.push_back(tmp);
-      }
+      } while(input.length() != 0);
+//      while(input.length() != 0) {
+//          Token tmp = scanToken();
+//          vectorOfTokens.push_back(tmp);
+//      }
   return vectorOfTokens;
   }
 };
@@ -145,12 +130,15 @@ public:
 //
 //    if (val == "Schemes") {
 //        return Token(SCHEMES, val, lineAt);
-//    if (val == "Schemes") {
-//        return Token(SCHEMES, val, lineAt);
 //    }
-//        if (val == "Schemes") {
-//        return Token(SCHEMES, val, lineAt);
-//            if (val == "Schemes") {
-//                return Token(SCHEMES, val, lineAt);
+//    if (val == "Facts") {
+//        return Token(FACTS, val, lineAt);
+//    }
+//    if (val == "Rules") {
+//        return Token(RULES, val, lineAt);
+//    }
+//    if (val == "Queries") {
+//        return Token(QUERIES, val, lineAt);
+//    }
+//   return Token(ID, val, lineAt);
 //}
-//
