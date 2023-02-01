@@ -1,6 +1,6 @@
 #pragma once
 
-// Complex string tokens
+// Keyword string tokens
 
 #include "token.h"
 #include <sstream>
