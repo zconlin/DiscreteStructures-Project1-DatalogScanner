@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
-project(the_real_lab)
+project(cs236Project1)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(the_real_lab main.cpp)
+add_executable(cs236Project1 main.cpp)
