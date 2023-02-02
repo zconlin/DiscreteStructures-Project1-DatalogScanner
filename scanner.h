@@ -76,21 +76,23 @@ public:
             pos = 0;
             int startLine = lineAt;
             string stringString = "";
-            stringString.push_back(input.at(pos));
+            stringString.push_back(input.at(0));
             input = input.substr(1);
-            while (input.at(pos) != '\'') {
-                if (input.at(pos) == '\n') {
+            while (input.at(0) != '\'') {
+                if (input.at(0) == '\n') {
                     lineAt++;
                 }
+
+                stringString.push_back(input.at(0));
+                input = input.substr(1);
+
                 if (input.empty()) {
                     input.push_back(' ');
                     return {UNDEFINED, stringString, startLine};
                 }
-                stringString.push_back(input.at(pos));
-                pos = pos + 1;
             }
-            stringString.push_back(input.at(pos));
-            input = input.substr(pos + 1);
+            stringString.push_back(input.at(0));
+            input = input.substr( 1);
             return {STRING, stringString, startLine};
         } else if (isalpha(input.at(0))) {
             char c = input.at(0);
