@@ -73,17 +73,25 @@ public:
             }
             return {COMMENT, commentString, lineAt};
         } else if (input.at(0) == '\'') {
-            pos = 1;
+            pos = 0;
+            int startLine = lineAt;
             string stringString = "";
+            stringString.push_back(input.at(pos));
+            input = input.substr(1);
             while (input.at(pos) != '\'') {
                 if (input.at(pos) == '\n') {
                     lineAt++;
                 }
+                if (input.empty()) {
+                    input.push_back(' ');
+                    return {UNDEFINED, stringString, startLine};
+                }
                 stringString.push_back(input.at(pos));
                 pos = pos + 1;
             }
+            stringString.push_back(input.at(pos));
             input = input.substr(pos + 1);
-            return {STRING, stringString, lineAt};
+            return {STRING, stringString, startLine};
         } else if (isalpha(input.at(0))) {
             char c = input.at(0);
             input = input.substr(1);
