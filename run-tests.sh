@@ -1,18 +1,18 @@
 #!/bin/bash
 
-# script for project 2 pass-off tests
+# script for project 1 pass-off tests
 
-program="project2"
+program="project1"
 
 buckets="20 40 60 80 100"
 
-numbers_20="21 22"
-numbers_40="41 42 43 44 45 46 47 48"
+numbers_20="21 22 23"
+numbers_40="41"
 numbers_60="61 62"
-numbers_80="81 82 83 84 85 86 87"
-numbers_100="101 102 103"
+numbers_80="81 82"
+numbers_100="101 102"
 
-testdir="project2-passoff"
+testdir="project1-passoff"
 
 g++ -Wall -Werror -std=c++17 -g *.cpp -o $program
 

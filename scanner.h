@@ -1,7 +1,5 @@
 #pragma once
 
-// Keyword string tokens not implemented yet
-
 #include "token.h"
 #include <sstream>
 #include <string>
@@ -20,7 +18,6 @@ public:
     Scanner(const string &input) : input(input) {}
 
     Token keywordFinder(char startChar);
-
 
     Token scanToken() {
         if (input.empty()) {
@@ -82,10 +79,8 @@ public:
                 if (input.at(0) == '\n') {
                     lineAt++;
                 }
-
                 stringString.push_back(input.at(0));
                 input = input.substr(1);
-
                 if (input.empty()) {
                     input.push_back(' ');
                     return {UNDEFINED, stringString, startLine};
