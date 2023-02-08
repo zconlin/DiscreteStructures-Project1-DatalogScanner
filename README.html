@@ -1,0 +1,503 @@
+<html><head>
+    <title>Datalog Scanner</title>
+    <link rel="stylesheet" type="text/css" href="../include/style.css">
+</head>
+<body data-new-gr-c-s-check-loaded="14.1095.0" data-gr-ext-installed="">
+
+<div class="box">
+<h1>Computer Science 236</h1>
+</div>
+
+<div class="main">
+
+<div class="center">
+<h2>
+Datalog Scanner 
+</h2>
+</div>
+<hr>
+
+<p>
+Note: Projects are to be completed by each student individually
+(not by groups of students).
+</p>
+
+<p>
+Note: Projects must be passed-off
+with a TA to be given credit.
+</p>
+ 
+<p>
+Note: You may not use a regular expression library for this project.
+</p>
+
+<p>
+Write a scanner that reads a sequence of characters from a text file,
+identifies the datalog language tokens found in the file,
+and outputs each token.
+</p>
+
+
+<h3>
+Example Input
+</h3>
+
+<pre>
+Queries:
+   marriedTo ('Bea' , 'Zed')?
+
+Rules:
+   marriedTo( X,Y ) :- marriedTo(Y,X) .
+
+
+</pre>
+
+
+<h3>
+Example Output
+</h3>
+
+<pre>(QUERIES,"Queries",2)
+(COLON,":",2)
+(ID,"marriedTo",3)
+(LEFT_PAREN,"(",3)
+(STRING,"'Bea'",3)
+(COMMA,",",3)
+(STRING,"'Zed'",3)
+(RIGHT_PAREN,")",3)
+(Q_MARK,"?",3)
+(RULES,"Rules",5)
+(COLON,":",5)
+(ID,"marriedTo",6)
+(LEFT_PAREN,"(",6)
+(ID,"X",6)
+(COMMA,",",6)
+(ID,"Y",6)
+(RIGHT_PAREN,")",6)
+(COLON_DASH,":-",6)
+(ID,"marriedTo",6)
+(LEFT_PAREN,"(",6)
+(ID,"Y",6)
+(COMMA,",",6)
+(ID,"X",6)
+(RIGHT_PAREN,")",6)
+(PERIOD,".",6)
+(EOF,"",8)
+Total Tokens = 26
+</pre>
+
+
+
+<h3>
+Example Input
+</h3>
+
+<pre>,
+'a string'
+# a comment
+Schemes
+FactsRules
+::-
+
+</pre>
+
+
+<h3>
+Example Output
+</h3>
+
+<pre>(COMMA,",",1)
+(STRING,"'a string'",2)
+(COMMENT,"# a comment",3)
+(SCHEMES,"Schemes",4)
+(ID,"FactsRules",5)
+(COLON,":",6)
+(COLON_DASH,":-",6)
+(EOF,"",7)
+Total Tokens = 8
+</pre>
+
+
+
+<h3>
+Testing
+</h3>
+
+<p>
+Here are some ideas for tests.
+</p>
+
+<ol>
+<li>
+An empty input file.
+</li><li>
+A colon immediately followed by another token
+   (no space between the colon and the next token).
+</li><li>
+An identifier that contains a number.
+</li><li>
+An identifier that contains a keyword.
+</li><li>
+An empty string (nothing between the quotes '').
+</li><li>
+An unterminated string.
+</li></ol>
+
+
+
+<h3>
+Design
+</h3>
+
+<p>
+You will build a datalog parser in the next project.
+The datalog parser will read tokens from the datalog scanner.
+The scanner should be designed such that the parser
+is able to easily get the tokens from the scanner.
+</p>
+
+
+
+<h3>
+White Space
+</h3>
+
+<p>
+White space is a sequence of space, tab, or newline characters.
+Your lexer should always skip over white space between tokens.
+White space is not completely ignored because
+it is sometimes needed to separate tokens.
+For the C++ language, an easy way to recognize
+white space characters is to use the 'isspace' function.
+</p>
+
+
+
+<!--
+
+comments are defined in table for now
+
+<h3>
+Line Comments
+</h3>
+
+<p>
+A line comment starts with a hash character (#) and
+ends at the end of the line or end of the file.
+</p>
+
+<h3>
+Block Comments
+</h3>
+
+<p>
+A block comment starts with #| and ends with |#.
+Block comments may cover multiple lines.
+Block comments can be empty
+and multiple comments can appear on the same line.
+The line number for a comment token
+is the line where the comment begins.
+If a block comment is not terminated
+(end of file is encountered before the end of the comment),
+the token becomes an undefined token.
+</p>
+-->
+
+
+
+<h3>
+Output Format
+</h3>
+
+<p>
+The expected output is a list of the tokens found in the input
+file followed by a count of the number of tokens found.
+The tokens are output one token per line.
+</p>
+<p>
+Each line has the form:
+</p>
+<pre>(type,"value",line)
+</pre>
+<p>
+The 'type' must be one of the types listed in the table.
+The 'value' is the actual input text that forms the token.
+The 'line' is the line number where the token is found.
+Notice there are no spaces on either side of the commas
+separating the token's elements. 
+</p>
+<p>
+The last line of output has the form:
+</p>
+<pre>Total Tokens = N
+</pre>
+<p>
+where 'N' is the number of tokens found.
+</p>
+
+
+
+<h3>
+Input Errors
+</h3>
+
+<p>
+When the input contains errors,
+output tokens with the type UNDEFINED.
+</p>
+
+<p>
+Undefined tokens are:
+</p>
+
+<ol>
+<li>
+A single character that cannot be
+the first character of a valid token.
+</li><li>
+A string that is not terminated.
+</li><li>
+A comment that is not terminated.
+</li></ol>
+
+<h4>
+Example Input
+</h4>
+
+<pre>Facts:
+$
+Rules:
+</pre>
+
+<h4>
+Example Output
+</h4>
+
+<pre>(FACTS,"Facts",1)
+(COLON,":",1)
+(UNDEFINED,"$",2)
+(RULES,"Rules",3)
+(COLON,":",3)
+(EOF,"",4)
+Total Tokens = 6
+</pre>
+
+
+
+<h3>
+Token Types
+</h3>
+
+<p>
+The following table describes the types of tokens your lexer must recognize.
+</p>
+
+<table>
+
+<tbody><tr>
+<th>Token Type</th>
+<th>Description</th>
+<th>Examples</th>
+</tr>
+
+<tr>
+<td class="center">COMMA</td>
+<td class="center">The <span class="code">','</span> character</td>
+<td class="center">,</td>
+</tr>
+
+<tr>
+<td class="center">PERIOD</td>
+<td class="center">The <span class="code">'.'</span> character</td>
+<td class="center">.</td>
+</tr>
+
+<tr>
+<td class="center">Q_MARK</td>
+<td class="center">The <span class="code">'?'</span> character</td>
+<td class="center">?</td>
+</tr>
+
+<tr>              
+<td class="center">LEFT_PAREN</td>
+<td class="center">The <span class="code">'('</span> character</td>
+<td class="center">(</td>
+</tr>
+
+<tr>
+<td class="center">RIGHT_PAREN</td>
+<td class="center">The <span class="code">')'</span> character</td>
+<td class="center">)</td>
+</tr>
+
+<tr>
+<td class="center">COLON</td>
+<td class="center">The <span class="code">':'</span> character</td>
+<td class="center">:</td>
+</tr>
+
+<tr>
+<td class="center">COLON_DASH</td>
+<td class="center">The string <span class="code">":-"</span></td>
+<td class="center">:-</td>
+</tr>
+
+<tr>
+<td class="center">MULTIPLY</td>
+<td class="center">The <span class="code">'*'</span> character</td>
+<td class="center">*</td>
+</tr>
+
+<tr>
+<td class="center">ADD</td>
+<td class="center">The <span class="code">'+'</span> character</td>
+<td class="center">+</td>
+</tr>
+
+<tr>
+<td class="center">SCHEMES</td>
+<td class="center">The string <span class="code">"Schemes"</span></td>
+<td class="center">Schemes</td>
+</tr>
+
+<tr>
+<td class="center">FACTS</td>
+<td class="center">The string <span class="code">"Facts"</span></td>
+<td class="center">Facts</td>
+</tr>
+
+<tr>
+<td class="center">RULES</td>
+<td class="center">The string <span class="code">"Rules"</span></td>
+<td class="center">Rules</td>
+</tr>
+
+<tr>
+<td class="center">QUERIES</td>
+<td class="center">The string <span class="code">"Queries"</span></td>
+<td class="center">Queries</td>
+</tr>
+
+<tr>
+<td class="center">ID</td>
+<td class="widthLimit">
+An identifier is a letter followed by
+zero or more letters or digits,
+and is not a keyword (Schemes, Facts, Rules, Queries).
+<br>
+Note that for the input "1stPerson"
+the scanner would find two tokens:
+an 'undefined' token made from the character "1"
+and an 'identifier' token made from the
+characters "stPerson".
+</td>
+<td class="center">
+	<table>
+	<tbody><tr>
+	<th>Valid Identifiers</th>
+	<th>Invalid Identifiers</th>
+	</tr>
+	<tr>
+	<td>Identifier1</td>
+	<td>1stPerson</td>
+	</tr>
+	<tr>
+	<td>Person</td>
+	<td>Schemes</td>
+	</tr>
+	</tbody></table>
+</td>
+</tr>
+
+<tr>
+<td class="center">STRING</td>
+<td class="widthLimit">
+A string is a sequence of characters enclosed in single quotes.
+White space (space, tab) is not skipped when inside a string.
+Two adjacent single quotes within a string denote an apostrophe.
+The line number for a string token
+is the line where the string begins.
+If a string is not terminated
+(end of file is encountered before the end of the string),
+the token becomes an undefined token.
+
+<br>
+<br>
+The 'value' of a token printed to the output is the
+sequence of input characters that form the token.
+For a string token this means that two adjacent single quotes in
+the input are printed as two adjacent single quotes in the output.
+(In other words, don't convert two adjacent single quotes
+in a string to just one apostrophe in the output.)
+
+</td>
+<td class="center">
+<span class="code">'This is a string'</span><br><br>
+<span class="code">''</span> -- (The empty string)<br><br>
+<span class="code">'This isn''t two strings'</span><br><br>
+</td>
+</tr>
+
+<tr>
+<td class="center" rowspan="2">COMMENT</td>
+<td>
+A line comment starts with a hash character (#) and
+ends at the end of the line or end of the file.
+</td>
+<td class="center">
+<span class="code"># This is a comment  </span><br>
+</td>
+</tr>
+<tr>
+<td>
+A block comment starts with #| and ends with |#.
+Block comments may cover multiple lines.
+Block comments can be empty
+and multiple comments can appear on the same line.
+The line number for a comment token
+is the line where the comment begins.
+If a block comment is not terminated
+(end of file is encountered before the end of the comment),
+the token becomes an undefined token.
+</td>
+<td class="center">
+<span class="code">#||#</span><br><br>
+<span class="code">#| This is a</span><br>
+<span class="code">multiline comment |#</span><br><br>
+<span class="code">#| This is an illegal block comment</span><br>
+<span class="code">because it ends with end of file</span><br>
+</td>
+</tr>
+
+<tr>
+<td class="center">UNDEFINED</td>
+<td class="widthLimit">
+Any character not tokenized as a string, keyword, identifier, symbol,
+or white space is undefined. Additionally, any non-terminating string
+or non-terminating block comment is undefined. In both of the latter
+cases you reach EOF before finding the end of the string or the end of
+the comment.
+</td>
+<td class="center">
+<span class="code">$&amp;^ (Three undefined tokens)</span><br><br>
+<span class="code">'a string that does not end</span><br><br>
+</td>
+</tr>
+
+<tr>
+<td class="center">EOF</td>
+<td class="center">The end of the input file.</td>
+<td class="center"></td>
+</tr>
+
+</tbody></table>
+
+
+
+</div>
+
+
+
+
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
