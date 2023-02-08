@@ -3,4 +3,4 @@ project(cs236Project1)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(cs236Project1 main.cpp)
+add_executable(CS236Project1-DatalogScanner main.cpp)
